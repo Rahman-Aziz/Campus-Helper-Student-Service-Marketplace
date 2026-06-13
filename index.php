@@ -228,6 +228,28 @@ footer {
     display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6);
     z-index: 300; align-items: center; justify-content: center;
 }
+
+.help-tickets {
+    position: fixed;
+    bottom: 90px; /* sits just above help button */
+    right: 28px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #0e0e14;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    transition: transform 0.2s ease;
+}
+
+.help-tickets:hover {
+    transform: scale(1.08);
+}
 .modal-overlay.active { display: flex; }
 .modal {
     background: var(--surface); border-radius: 16px; padding: 32px;
@@ -271,24 +293,27 @@ textarea.form-input { resize: vertical; min-height: 100px; }
 
 <!-- NAVIGATION -->
 <nav>
-    <a href="/campus_helper/" class="nav-brand">Campus<span>Helper</span></a>
+    <a href="./" class="nav-brand">Campus<span>Helper</span></a>
     <div class="nav-search">
         <span class="search-icon">🔍</span>
-        <form method="GET" action="/campus_helper/">
+        <form method="GET" action="./">
             <input type="text" name="q" placeholder="Search services..." value="<?= e($searchQuery) ?>">
         </form>
     </div>
     <div class="nav-links">
         <?php if (isLoggedIn()): $u = currentUser(); ?>
-            <a href="/campus_helper/pages/dashboard.php" class="btn btn-ghost">Dashboard</a>
-            <a href="/campus_helper/pages/create_service.php" class="btn btn-accent btn-sm">+ List Service</a>
+            <a href="pages/dashboard.php" class="btn btn-ghost">Dashboard</a>
+            <a href="pages/create_service.php" class="btn btn-accent btn-sm">+ List Service</a>
             <div class="user-badge">
                 <div class="user-avatar-nav"><?= strtoupper(substr($u['username'],0,2)) ?></div>
             </div>
-            <a href="/campus_helper/pages/logout.php" class="btn btn-ghost btn-sm">Logout</a>
+            <a href="/pages/support_ticket.php" class="btn btn-ghost">
+                Tickets
+            </a>
+            <a href="pages/logout.php" class="btn btn-ghost btn-sm">Logout</a>
         <?php else: ?>
-            <a href="/campus_helper/pages/login.php" class="btn btn-ghost">Login</a>
-            <a href="/campus_helper/pages/register.php" class="btn btn-accent">Sign Up</a>
+            <a href="pages/login.php" class="btn btn-ghost">Login</a>
+            <a href="pages/register.php" class="btn btn-accent">Sign Up</a>
         <?php endif; ?>
     </div>
 </nav>
@@ -311,7 +336,7 @@ textarea.form-input { resize: vertical; min-height: 100px; }
     <?php else: ?>
     <div class="services-grid">
         <?php foreach ($searchResults as $s): ?>
-        <a href="/campus_helper/pages/service.php?id=<?= $s['id'] ?>" class="service-card">
+        <a href="pages/service.php?id=<?= $s['id'] ?>" class="service-card">
             <div class="service-thumb" style="background:<?= ['linear-gradient(135deg,#667eea,#764ba2)','linear-gradient(135deg,#f093fb,#f5576c)','linear-gradient(135deg,#4facfe,#00f2fe)','linear-gradient(135deg,#43e97b,#38f9d7)'][($s['id']-1)%4] ?>">
                 <span class="cat-badge"><?= e($s['cat_name']) ?></span>
             </div>
@@ -338,7 +363,7 @@ textarea.form-input { resize: vertical; min-height: 100px; }
     <div class="hero-inner">
         <h1>Find Student Services<br>You Can <span class="highlight">Trust</span></h1>
         <p>Your campus marketplace — get help from fellow students for assignments, coding, design, tutoring & more.</p>
-        <form method="GET" action="/campus_helper/">
+        <form method="GET" action="./">
             <div class="hero-search">
                 <input type="text" name="q" placeholder='Try "essay writing" or "python help"...'>
                 <button type="submit">Search</button>
@@ -346,7 +371,7 @@ textarea.form-input { resize: vertical; min-height: 100px; }
         </form>
         <div class="hero-tags">
             <?php foreach ($categories as $c): ?>
-            <a href="/campus_helper/?q=<?= urlencode($c['name']) ?>" class="hero-tag"><?= $c['icon'] ?> <?= e($c['name']) ?></a>
+            <a href="?q=<?= urlencode($c['name']) ?>" class="hero-tag"><?= $c['icon'] ?> <?= e($c['name']) ?></a>
             <?php endforeach; ?>
         </div>
     </div>
@@ -359,7 +384,7 @@ textarea.form-input { resize: vertical; min-height: 100px; }
     </div>
     <div class="categories-grid">
         <?php foreach ($categories as $c): ?>
-        <a href="/campus_helper/?q=<?= urlencode($c['name']) ?>" class="category-card">
+        <a href="?q=<?= urlencode($c['name']) ?>" class="category-card">
             <div class="icon"><?= $c['icon'] ?></div>
             <div class="name"><?= e($c['name']) ?></div>
         </a>
@@ -376,7 +401,7 @@ textarea.form-input { resize: vertical; min-height: 100px; }
         <?php
         $colors = ['linear-gradient(135deg,#667eea,#764ba2)','linear-gradient(135deg,#f093fb,#f5576c)','linear-gradient(135deg,#4facfe,#00f2fe)','linear-gradient(135deg,#43e97b,#38f9d7)','linear-gradient(135deg,#fa709a,#fee140)','linear-gradient(135deg,#30cfd0,#667eea)','linear-gradient(135deg,#a18cd1,#fbc2eb)','linear-gradient(135deg,#fccb90,#d57eeb)'];
         foreach ($services as $i => $s): ?>
-        <a href="/campus_helper/pages/service.php?id=<?= $s['id'] ?>" class="service-card">
+        <a href="pages/service.php?id=<?= $s['id'] ?>" class="service-card">
             <div class="service-thumb" style="background:<?= $colors[$i % count($colors)] ?>">
                 <span class="cat-badge"><?= e($s['cat_name']) ?></span>
             </div>
@@ -422,7 +447,7 @@ textarea.form-input { resize: vertical; min-height: 100px; }
         <button class="modal-close" onclick="document.getElementById('helpModal').classList.remove('active')">✕</button>
         <div class="modal-title">🛟 How can we help?</div>
         <p style="color:var(--muted);font-size:0.9rem;margin-bottom:20px;">Connect with our student support team or report an issue.</p>
-        <form method="POST" action="/campus_helper/pages/support.php">
+        <form method="POST" action="pages/support.php">
             <div class="form-group">
                 <label class="form-label">Your Email</label>
                 <input type="email" name="email" class="form-input" placeholder="student@university.edu" <?= isLoggedIn() ? 'value="'.e(currentUser()['email']).'"' : '' ?>>
@@ -442,6 +467,7 @@ textarea.form-input { resize: vertical; min-height: 100px; }
             </div>
             <input type="hidden" name="subject" value="Help Request from CampusHelper">
             <button type="submit" class="btn btn-primary btn-full btn-lg">Send to Support</button>
+            <a href="pages/support_ticket.php" class="help-tickets" title="Active Tickets">🎫Active Tickets</a>
         </form>
     </div>
 </div>
@@ -464,7 +490,7 @@ document.querySelectorAll('.hero-tag').forEach(tag => {
     tag.addEventListener('click', e => {
         e.preventDefault();
         const q = tag.textContent.trim().replace(/^[^\w]+/,'');
-        window.location.href = '/campus_helper/?q=' + encodeURIComponent(q);
+        window.location.href = '?q=' + encodeURIComponent(q);
     });
 });
 </script>
